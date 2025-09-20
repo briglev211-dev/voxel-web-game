@@ -1,4 +1,5 @@
-// Game variables
+document.addEventListener("DOMContentLoaded", function() {
+
 let world = [];
 let player = {x:5, y:2, z:5, health:100};
 
@@ -35,7 +36,7 @@ function addBlock(x,y,z,type){
   const geo = new THREE.BoxGeometry(1,1,1);
   const mat = blockMaterials[type] || blockMaterials.stone;
   const mesh = new THREE.Mesh(geo, mat);
-  mesh.position.set(x+0.5, y+0.5, z+0.5);
+  mesh.position.set(x+0.5,y+0.5,z+0.5);
   scene.add(mesh);
   blockMeshes[`${x},${y},${z}`] = mesh;
   world.push({x,y,z,type});
@@ -65,10 +66,8 @@ function initWorld(){
 
 // PointerLockControls
 const controls = new THREE.PointerLockControls(camera, renderer.domElement);
-document.body.addEventListener('click', ()=>controls.lock());
 scene.add(controls.getObject());
 
-// WASD movement
 const move={forward:false,back:false,left:false,right:false};
 document.addEventListener('keydown',e=>{
   if(e.key==='w') move.forward=true;
@@ -84,13 +83,22 @@ document.addEventListener('keyup',e=>{
 });
 
 function updatePlayer(){
-  const speed=0.1;
+  const speed = 0.1;
   if(move.forward) controls.moveForward(speed);
   if(move.back) controls.moveForward(-speed);
   if(move.left) controls.moveRight(-speed);
   if(move.right) controls.moveRight(speed);
   document.getElementById('health').innerText = `Health: ${Math.floor(player.health)}`;
 }
+
+// Mining/placing blocks
+renderer.domElement.addEventListener('mousedown', e => {
+  const x = Math.floor(player.x);
+  const y = Math.floor(player.y);
+  const z = Math.floor(player.z);
+  if(e.button===0) removeBlock(x,y,z);  // left click removes
+  if(e.button===2) addBlock(x,y,z,'stone'); // right click places
+});
 
 // Animate loop
 function animate(){
@@ -105,14 +113,11 @@ function startSingleplayer(){
   initWorld();
   camera.position.set(5,2,15);
   controls.getObject().position.set(5,2,15);
+  renderer.domElement.addEventListener('click', ()=>controls.lock());
   animate();
 }
 
-// Start Multiplayer (not yet implemented)
-function startMultiplayer(){
-  alert("Multiplayer not implemented yet. You can play Singleplayer.");
-}
-
-// Attach button events
 document.getElementById("btnSingle").addEventListener("click", startSingleplayer);
-document.getElementById("btnMulti").addEventListener("click", startMultiplayer);
+
+});
+
