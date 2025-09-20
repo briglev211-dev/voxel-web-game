@@ -1,0 +1,20 @@
+html,body {
+  height:100%; margin:0; font-family:sans-serif;
+  background:#111; color:#ddd;
+}
+#game { display:flex; gap:12px; padding:12px; box-sizing:border-box; height:100vh; }
+canvas { background:#7ec0ee; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,0.6); }
+#ui { width:300px; display:flex; flex-direction:column; gap:10px; }
+.panel { background:rgba(0,0,0,0.45); padding:10px; border-radius:8px; }
+#inventory, #hotbar { display:flex; flex-wrap:wrap; gap:6px; }
+.slot {
+  width:48px; height:48px; background:rgba(255,255,255,0.05);
+  border-radius:6px; display:flex; flex-direction:column;
+  justify-content:center; align-items:center; color:#fff; font-size:11px;
+}
+.slot.selected { border:2px solid #ffdd55; }
+.slot strong { font-size:12px; }
+button {
+  background:#1d1f21; color:#ddd; border:1px solid rgba(255,255,255,0.1);
+  padding:6px 8px; border-radius:6px; cursor:pointer;
+}
